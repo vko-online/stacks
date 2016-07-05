@@ -1,0 +1,94 @@
+<html>
+<body>
+	<style>
+		html, body, #list{
+			margin: 0;
+			padding: 0;
+		}
+		#list{
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+		a{
+			position: relative;
+			overflow: hidden;
+			height: 100px;
+			width: 100px;
+			margin: 3px;
+			display: flex;
+			flex-direction: column-reverse;
+			justify-content: space-around;
+			align-items: center;
+		}
+		a span{
+			flex-grow: 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			max-width: 100%;
+		}
+		a img{
+			flex-shrink: 0;
+			width: 60px;
+			height: 60px;
+			border-radius: 5px;
+			border-radius: 5px;
+			background: #fff;
+			z-index: 1;
+		}
+	</style>
+	<div id="list"></div>
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script src="http://lokeshdhakar.com/projects/color-thief/js/color-thief.js"></script>
+	<script>
+		(function(){
+			function invert(rgb) {
+				rgb = Array.prototype.join.call(arguments).match(/(-?[0-9\.]+)/g);
+				for (var i = 0; i < rgb.length; i++) {
+					rgb[i] = (i === 3 ? 1 : 255) - rgb[i];
+				}
+				return rgb;
+			}
+
+			var colorThief = new ColorThief();
+			$.ajax('./img_list').then(function(rawSuccessResponse){
+				
+				var successResponse = rawSuccessResponse
+				.split('\n')
+				.filter(function(item){ return !!item; });
+				successResponse.forEach(function(item){
+					var title = item.split('.').shift();
+					var src_url = './images/' + item;
+
+					var image = new Image();
+					image.width = 100;
+					image.src = src_url;
+
+					var img = $(document.createElement('img'));
+					img.attr('src', src_url);
+					img.attr('alt', title);
+					var a = $(document.createElement('a'));
+					var span = $(document.createElement('span'));
+					span.text(title);
+					a.append(span, img);
+					$('#list').append(a);
+
+					(function(a) {
+						image.onload = function () {
+							var palette = colorThief.getPalette(image);
+							var color = palette[1];
+
+							var cssColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+							var invertedColor = invert(color);
+							var cssColor2 = 'rgb(' + invertedColor[0] + ',' + invertedColor[1] + ',' + invertedColor[2] + ')';
+							a.css('color', cssColor2);
+							a.css('background', cssColor);
+						};
+					})(a);
+				});
+			});
+		})();
+	</script>
+</body>
+</html>
