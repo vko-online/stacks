@@ -1,0 +1,27 @@
+{
+  "name": "tech_stacks",
+  "version": "1.0.0",
+  "description": "List of technologies and services for developers with logos",
+  "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "request": "^2.72.0",
+    "x-ray": "^2.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+	 "copy": "node index.js",
+	 "load": "node downloadFile.js",
+	 "export": "ls ./images >> img_list",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vko-online/stacks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vko-online/stacks/issues"
+  },
+  "homepage": "https://github.com/vko-online/stacks#readme"
+}
