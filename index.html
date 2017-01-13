@@ -54,39 +54,39 @@
 			var colorThief = new ColorThief();
 			$.ajax('./img_list').then(function(rawSuccessResponse){
 				
-				var successResponse = rawSuccessResponse
-				.split('\n')
-				.filter(function(item){ return !!item; });
-				successResponse.forEach(function(item){
-					var title = item.split('.').shift();
-					var src_url = './images/' + item;
+				rawSuccessResponse
+					.split('\n')
+					.filter(function(item){ return !!item; })
+					.forEach(function(item){
+						var title = item.split('.').shift();
+						var src_url = './images/' + item;
 
-					var image = new Image();
-					image.width = 100;
-					image.src = src_url;
+						var image = new Image();
+						image.width = 100;
+						image.src = src_url;
 
-					var img = $(document.createElement('img'));
-					img.attr('src', src_url);
-					img.attr('alt', title);
-					var a = $(document.createElement('a'));
-					var span = $(document.createElement('span'));
-					span.text(title);
-					a.append(span, img);
-					$('#list').append(a);
+						var img = $(document.createElement('img'));
+						img.attr('src', src_url);
+						img.attr('alt', title);
+						var a = $(document.createElement('a'));
+						var span = $(document.createElement('span'));
+						span.text(title);
+						a.append(span, img);
+						$('#list').append(a);
 
-					(function(a) {
-						image.onload = function () {
-							var palette = colorThief.getPalette(image);
-							var color = palette[1];
+						(function(a) {
+							image.onload = function () {
+								var palette = colorThief.getPalette(image);
+								var color = palette[1];
 
-							var cssColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
-							var invertedColor = invert(color);
-							var cssColor2 = 'rgb(' + invertedColor[0] + ',' + invertedColor[1] + ',' + invertedColor[2] + ')';
-							a.css('color', cssColor2);
-							a.css('background', cssColor);
-						};
-					})(a);
-				});
+								var cssColor = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')';
+								var invertedColor = invert(color);
+								var cssColor2 = 'rgb(' + invertedColor[0] + ',' + invertedColor[1] + ',' + invertedColor[2] + ')';
+								a.css('color', cssColor2);
+								a.css('background', cssColor);
+							};
+						})(a);
+					});
 			});
 		})();
 	</script>
